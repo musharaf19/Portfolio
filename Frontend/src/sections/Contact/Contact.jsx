@@ -18,7 +18,7 @@ function Contact() {
     setStatus("Sending...");
 
     try {
-      const res = await fetch("http://localhost:4000/send/mail", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/send/mail`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,6 +34,7 @@ function Contact() {
         setStatus("Failed to send message.");
       }
     } catch (err) {
+      console.error("Error sending message:", err);
       setStatus("Something went wrong.");
     }
   };

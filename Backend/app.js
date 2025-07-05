@@ -3,8 +3,10 @@ import { config } from "dotenv";
 import cors from "cors";
 import { sendEmail } from "./utils/sendEmail.js";
 
-// Load environment variables
-config({ path: "./config.env" });
+// Load environment variables only in development
+if (process.env.NODE_ENV !== "production") {
+  config(); // Loads from .env
+}
 
 const app = express();
 const router = express.Router();
@@ -12,7 +14,7 @@ const router = express.Router();
 // CORS Configuration
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL],
+    origin: [process.env.FRONTEND_URL], // Set this in Vercel dashboard
     methods: ["POST"],
     credentials: true,
   })
@@ -24,11 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Default test route
 app.get("/", (req, res) => {
-  res.send("✅  backend server is running!");
+  res.send("✅ Backend server is running!");
 });
 
 // Mail sending route
-router.post("/send/mail", async (req, res, next) => {
+router.post("/send/mail", async (req, res) => {
   const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
@@ -40,10 +42,10 @@ router.post("/send/mail", async (req, res, next) => {
 
   try {
     await sendEmail({
-      email: "musharafaejaz9044@gmail.com", // Your own inbox
+      email: "musharafaejaz9044@gmail.com", // Your inbox
       subject: "Portfolio CONTACT",
       message,
-      userEmail: email, // Sender's email
+      userEmail: email,
     });
 
     res.status(200).json({
@@ -59,10 +61,8 @@ router.post("/send/mail", async (req, res, next) => {
   }
 });
 
-// Use the router
-app.use(router);
+// Prefix all routes with /api
+app.use("/api", router);
 
-// Start the server
-app.listen(process.env.PORT, () => {
-  console.log(`🚀 Server listening at port ${process.env.PORT}`);
-});
+// Export for Vercel (serverless)
+export default app;

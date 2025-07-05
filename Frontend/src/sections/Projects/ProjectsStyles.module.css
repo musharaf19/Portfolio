@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.container img {
+  width: 280px;                  /* smaller square */
+  height: 280px;
+  object-fit: cover;
+  align-self: center;
+  background-color: var(--project-card-bg);
+  border-radius: 16px;           /* slightly smaller radius */
+}
+
+.container a {
+  width: fit-content;
+  text-decoration: none;
+  color: #222;
+  transition: transform 150ms ease-in-out;
+}
+
+.container a:hover {
+  transform: scale(1.03);
+}
+
+.projectsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;                    /* reduced gap */
+}
+
+@media (min-width: 800px) {
+  .projectsContainer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 0 20px;
+  }
+}

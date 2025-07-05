@@ -1,0 +1,49 @@
+/* Existing styles */
+.container {
+  text-align: center;
+  padding: 20px 0;
+  background-color: var(--footer-bg-color, #f9f9f9);
+  color: var(--footer-text-color, #222);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container p {
+  font-size: 16px;
+  color: var(--footer-text-color);
+  margin: 0; /* keep margin zero here */
+  margin-top: 20px; /* add some space from socials */
+}
+
+.socialLinks {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 24px; /* increased gap between icons */
+  margin-bottom: 20px; /* add gap below socials */
+}
+
+.socialIcon {
+  width: 28px;  /* uniform width */
+  height: 28px; /* uniform height */
+  filter: grayscale(0.3);
+  transition: filter 0.3s ease;
+  cursor: pointer;
+}
+
+.socialIcon:hover {
+  filter: grayscale(0);
+}
+
+/* Dark mode override when data-theme='dark' is set on a global parent */
+:global([data-theme='dark']) .container {
+  background-color: var(--footer-bg-color, #222222);
+  color: var(--footer-text-color, #eee);
+}
+
+:global([data-theme='dark']) .container p {
+  color: var(--footer-text-color, #eee);
+}
+
+:global([data-theme='dark']) .socialIcon:hover {
+  filter: grayscale(0);
+}

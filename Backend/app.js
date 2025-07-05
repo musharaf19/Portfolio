@@ -24,11 +24,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Default test route
 app.get("/", (req, res) => {
-  res.send("✅ backend server is running!");
+  res.send("✅  backend server is running!");
 });
 
 // Mail sending route
-router.post("/send/mail", async (req, res) => {
+router.post("/send/mail", async (req, res, next) => {
   const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
@@ -40,10 +40,10 @@ router.post("/send/mail", async (req, res) => {
 
   try {
     await sendEmail({
-      email: "musharafaejaz9044@gmail.com",
+      email: "musharafaejaz9044@gmail.com", // Your own inbox
       subject: "Portfolio CONTACT",
       message,
-      userEmail: email,
+      userEmail: email, // Sender's email
     });
 
     res.status(200).json({
@@ -59,11 +59,10 @@ router.post("/send/mail", async (req, res) => {
   }
 });
 
-// Prefix all routes with /api
-app.use("/api", router);
+// Use the router
+app.use(router);
 
-// Start server
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server listening at port ${PORT}`);
+// Start the server
+app.listen(process.env.PORT, () => {
+  console.log(`🚀 Server listening at port ${process.env.PORT}`);
 });

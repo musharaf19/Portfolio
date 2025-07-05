@@ -1,8 +1,26 @@
-  {
-    "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/"
+{
+  "projects": [],
+  "builds": [
+    {
+      "src": "Frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "Frontend/dist"
       }
-    ]
-  }
+    },
+    {
+      "src": "Backend/app.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/Backend/app.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/Frontend/dist/index.html"
+    }
+  ]
+}

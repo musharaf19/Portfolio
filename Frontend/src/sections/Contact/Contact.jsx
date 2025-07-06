@@ -12,16 +12,16 @@ function Contact() {
 
     emailjs
       .sendForm(
-        "VITE_EMAILJS_SERVICE_ID",      // 🔁 Replace with your EmailJS Service ID
-        "VITE_EMAILJS_TEMPLATE_ID",     // 🔁 Replace with your EmailJS Template ID
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         formRef.current,
-        "VITE_EMAILJS_PUBLIC_KEY"       // 🔁 Replace with your EmailJS Public Key
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       )
       .then(
         (result) => {
           console.log("Email sent:", result.text);
           setStatus("Message sent successfully!");
-          formRef.current.reset(); // Clear form
+          formRef.current.reset();
         },
         (error) => {
           console.error("Email send error:", error.text);

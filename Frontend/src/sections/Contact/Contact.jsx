@@ -1,76 +1,47 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import emailjs from "@emailjs/browser";
 import styles from "./ContactStyles.module.css";
 
 function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
+  const formRef = useRef();
   const [status, setStatus] = useState("");
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const handleSubmit = async (e) => {
+  const sendEmail = (e) => {
     e.preventDefault();
     setStatus("Sending...");
 
-    try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/send/mail`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    emailjs
+      .sendForm(
+        "service_i0epqji",      // 🔁 Replace with your EmailJS Service ID
+        "template_nxxg87l",     // 🔁 Replace with your EmailJS Template ID
+        formRef.current,
+        "HWeKAOKv4m3tIaL-d"       // 🔁 Replace with your EmailJS Public Key
+      )
+      .then(
+        (result) => {
+          console.log("Email sent:", result.text);
+          setStatus("Message sent successfully!");
+          formRef.current.reset(); // Clear form
         },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        setStatus("Message sent successfully!");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        setStatus("Failed to send message.");
-      }
-    } catch (err) {
-      console.error("Error sending message:", err);
-      setStatus("Something went wrong.");
-    }
+        (error) => {
+          console.error("Email send error:", error.text);
+          setStatus("Failed to send message.");
+        }
+      );
   };
 
   return (
     <section id="contact" className={styles.container}>
       <h1 className="sectionTitle">Contact</h1>
-      <form onSubmit={handleSubmit}>
+      <form ref={formRef} onSubmit={sendEmail}>
         <div className="formGroup">
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            required
-            value={formData.name}
-            onChange={handleChange}
-          />
+          <input type="text" name="user_name" placeholder="Name" required />
         </div>
         <div className="formGroup">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-          />
+          <input type="email" name="user_email" placeholder="Email" required />
         </div>
         <div className="formGroup">
-          <textarea
-            name="message"
-            placeholder="Message"
-            required
-            value={formData.message}
-            onChange={handleChange}
-          ></textarea>
+          <textarea name="message" placeholder="Message" required></textarea>
         </div>
         <input className="hover btn" type="submit" value="Submit" />
         {status && <p>{status}</p>}

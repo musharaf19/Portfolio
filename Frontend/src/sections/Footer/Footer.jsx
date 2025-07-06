@@ -26,7 +26,7 @@ function Footer() {
           <img src={snap} alt="Snapchat" className={styles.socialIcon} />
         </a>
         <a
-          href="https://facebook.com/MusharafAejaz"
+          href="https://facebook.com/musharaf.aejaz.91"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Facebook"
@@ -34,6 +34,7 @@ function Footer() {
           <img src={facebook} alt="Facebook" className={styles.socialIcon} />
         </a>
       </div>
+      <p>Let's Connect by Phone :+91 7006135798</p>
       <p>
         &copy; 2025 Musharaf Aejaz. <br />
         All rights reserved.
